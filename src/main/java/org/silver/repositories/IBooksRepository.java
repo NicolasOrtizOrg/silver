@@ -15,13 +15,13 @@ public interface IBooksRepository extends JpaRepository<BookEntity, Long> {
 
     Page<BookEntity> findAllByActiveIsTrue(Pageable pageable);
 
-    Page<BookEntity> findByAuthorName(String authorName, Pageable pageable);
+    Page<BookEntity> findByAuthorNameContainingIgnoreCase(String authorName, Pageable pageable);
 
     @Query("SELECT b FROM BookEntity b WHERE b.title LIKE %:keyword% OR b.author.name LIKE %:keyword%")
     Page<BookEntity> findByTitleOrAuthorName(@Param("keyword") String keyword, Pageable pageable);
 
     @Modifying
-    @Query("UPDATE BookEntity b SET b.isActive = :status WHERE b.id = :bookId")
+    @Query("UPDATE BookEntity b SET b.active = :status WHERE b.id = :bookId")
     void changeStatus(@Param("bookId") Long bookId,
                       @Param("status") boolean status);
 

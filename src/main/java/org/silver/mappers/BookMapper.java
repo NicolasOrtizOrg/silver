@@ -1,9 +1,11 @@
 package org.silver.mappers;
 
 import org.silver.models.dtos.books.BookRequestDto;
-import org.silver.models.dtos.books.BookResponseDto;
+import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.dtos.books.BookSearchQuery;
+import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.entities.BookEntity;
+
 
 public class BookMapper {
 
@@ -14,9 +16,10 @@ public class BookMapper {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
+                .image(bookDto.image())
                 .isbn(bookDto.isbn())
                 .publishedDate(bookDto.publishedDate())
-                .isActive(true)
+                .active(true)
                 .build();
     }
 
@@ -25,15 +28,28 @@ public class BookMapper {
                 .title(bookDto.title())
                 .description(bookDto.description())
                 .isbn(bookDto.isbn())
-                .isActive(true)
+                .active(true)
                 .build();
     }
 
-    public static BookResponseDto toDto(BookEntity bookEntity) {
-        return BookResponseDto.builder()
+    public static BookFullDto toFullDto(BookEntity bookEntity) {
+        return BookFullDto.builder()
+                .id(bookEntity.getId())
+                .title(bookEntity.getTitle())
+                .description(bookEntity.getDescription())
+                .image(bookEntity.getImage())
+                .isbn(bookEntity.getIsbn())
+                .publishedDate(bookEntity.getPublishedDate())
+                .author(bookEntity.getAuthor())
+                .build();
+    }
+
+    public static BookSimpleDto toSimpleDto(BookEntity bookEntity) {
+        return BookSimpleDto.builder()
                 .id(bookEntity.getId())
                 .title(bookEntity.getTitle())
                 .author(bookEntity.getAuthor())
+                .image(bookEntity.getImage())
                 .build();
     }
 

@@ -6,7 +6,7 @@ import org.silver.exceptions.BookNotFoundEx;
 import org.silver.exceptions.GenericException;
 import org.silver.mappers.BookMapper;
 import org.silver.models.dtos.books.BookRequestDto;
-import org.silver.models.dtos.books.BookResponseDto;
+import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.entities.AuthorEntity;
 import org.silver.models.entities.BookEntity;
 import org.silver.repositories.IBooksRepository;
@@ -35,27 +35,27 @@ public class BookServiceImpl implements IBookService {
 
 
     @Override
-    public BookResponseDto findById(Long id) {
+    public BookFullDto findById(Long id) {
         BookEntity bookDB = booksRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundEx(BOOK_NOT_FOUND));
-        return BookMapper.toDto(bookDB);
+        return BookMapper.toFullDto(bookDB);
     }
 
     @Override
-    public Page<BookResponseDto> findAllActive(Pageable pageable) {
-        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toDto);
+    public Page<BookFullDto> findAllActive(Pageable pageable) {
+        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toFullDto);
     }
 
     @Override
-    public Page<BookResponseDto> findByAuthor(String authorName, Pageable pageable) {
-        return booksRepository.findByAuthorName(authorName, pageable)
-                .map(BookMapper::toDto);
+    public Page<BookFullDto> findByAuthor(String authorName, Pageable pageable) {
+        return booksRepository.findByAuthorNameContainingIgnoreCase(authorName, pageable)
+                .map(BookMapper::toFullDto);
     }
 
     @Override
-    public Page<BookResponseDto> findByTitleOrAuthorName(String keyword, Pageable pageable) {
+    public Page<BookFullDto> findByTitleOrAuthorName(String keyword, Pageable pageable) {
         return booksRepository.findByTitleOrAuthorName(keyword, pageable)
-                .map(BookMapper::toDto);
+                .map(BookMapper::toFullDto);
     }
 
     @Transactional
@@ -81,20 +81,21 @@ public class BookServiceImpl implements IBookService {
         BookEntity bookDB = booksRepository.findById(id)
                 .orElseThrow(()-> new BookNotFoundEx(BOOK_NOT_FOUND));
 
-        modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.map(bookDto, bookDB);
-
         try {
+            modelMapper.getConfiguration().setSkipNullEnabled(true);
+            modelMapper.map(bookDto, bookDB);
+
             AuthorEntity authorDB = authorService.getOrSave(bookDto.author());
             bookDB.setAuthor(authorDB);
 
             booksRepository.save(bookDB);
         } catch (DataIntegrityViolationException ex) {
+            System.out.println("DAta integriririri");
             throw new BookExistsEx(ISBN_EXISTS);
         } catch (Exception ex) {
+            System.out.println("DExcepcodsfios gsdg");
             throw new GenericException(ex.getMessage());
         }
-
     }
 
     @Transactional
@@ -107,9 +108,9 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<BookResponseDto> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
+    public Page<BookFullDto> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
         return booksRepository.findAll(example, pageable)
-                .map(BookMapper::toDto);
+                .map(BookMapper::toFullDto);
     }
 
     private static final String BOOK_NOT_FOUND = "Book not found";

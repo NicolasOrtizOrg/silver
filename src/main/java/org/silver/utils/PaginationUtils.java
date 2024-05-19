@@ -3,9 +3,9 @@ package org.silver.utils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-public class PaginationConfig {
+public class PaginationUtils {
 
-    private PaginationConfig() {
+    private PaginationUtils() {
     }
 
     // Pagination config

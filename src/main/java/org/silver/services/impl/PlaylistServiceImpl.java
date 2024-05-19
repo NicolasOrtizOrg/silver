@@ -8,11 +8,11 @@ import org.silver.mappers.PlaylistMapper;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
 import org.silver.models.entities.PlaylistBookEntity;
 import org.silver.models.entities.PlaylistEntity;
-import org.silver.models.entities.UserEntity;
 import org.silver.repositories.IBooksRepository;
 import org.silver.repositories.IPlaylistBookRepository;
 import org.silver.repositories.IPlaylistRepository;
 import org.silver.services.IPlaylistService;
+import org.silver.utils.HeaderUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,8 @@ public class PlaylistServiceImpl implements IPlaylistService {
 
 
     @Override
-    public List<PlaylistSimpleDto> findByUserId(Long userId) {
+    public List<PlaylistSimpleDto> findByUserId() {
+        Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
         return playlistRepository
                 .findByUserId(userId)
                 .stream()
@@ -48,20 +49,16 @@ public class PlaylistServiceImpl implements IPlaylistService {
         return PlaylistMapper.toDto(playlistEntity);
     }
 
-    // Este método debería recibir solo el playlistName, y el userId se obtiene desde el token.
-    // Pero no implementé Spring Security ni JWT.
     @Override
-    public void savePlaylist(String playlistName, Long userId) {
-        // Forma temporal
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(userId);
+    public void savePlaylist(String playlistName) {
+        try{
+            Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
+            PlaylistEntity playlist = PlaylistMapper.nameToEntity(playlistName, userId);
 
-        PlaylistEntity playlist = new PlaylistEntity();
-
-        playlist.setName(playlistName);
-        playlist.setUser(userEntity);
-
-        playlistRepository.save(playlist);
+            playlistRepository.save(playlist);
+        } catch (Exception ex){
+            throw new GenericException(ex.getMessage());
+        }
     }
 
     @Override

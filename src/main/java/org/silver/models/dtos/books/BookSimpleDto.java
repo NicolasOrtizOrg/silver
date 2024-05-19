@@ -5,7 +5,7 @@ import org.silver.models.entities.AuthorEntity;
 
 
 @Builder
-public record BookResponseDto(
+public record BookSimpleDto(
         Long id,
         String title,
         String image,

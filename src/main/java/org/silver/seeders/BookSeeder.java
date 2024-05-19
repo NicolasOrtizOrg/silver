@@ -36,7 +36,7 @@ public class BookSeeder {
                     .author(author1)
                     .isbn("9780307474728")
                     .publishedDate(LocalDate.of(1967, 5, 30))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/cien_anos_de_soledad.jpg")
                     .build());
 
@@ -46,7 +46,7 @@ public class BookSeeder {
                     .author(author1)
                     .isbn("9780307389732")
                     .publishedDate(LocalDate.of(1985, 10, 5))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/el_amor_en_los_tiempos_del_colera.jpg")
                     .build());
 
@@ -56,7 +56,7 @@ public class BookSeeder {
                     .author(author2)
                     .isbn("9780553383804")
                     .publishedDate(LocalDate.of(1982, 4, 12))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/la_casa_de_los_espiritus.jpg")
                     .build());
 
@@ -66,7 +66,7 @@ public class BookSeeder {
                     .author(author2)
                     .isbn("9780374530536")
                     .publishedDate(LocalDate.of(1984, 11, 10))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/de_amor_y_de_sombra.jpg")
                     .build());
 
@@ -76,7 +76,7 @@ public class BookSeeder {
                     .author(author3)
                     .isbn("9780060732790")
                     .publishedDate(LocalDate.of(1963, 10, 13))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/la_ciudad_y_los_perros.jpg")
                     .build());
 
@@ -86,7 +86,7 @@ public class BookSeeder {
                     .author(author3)
                     .isbn("9780312420277")
                     .publishedDate(LocalDate.of(2000, 5, 30))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/la_fiesta_del_chivo.jpg")
                     .build());
 
@@ -96,7 +96,7 @@ public class BookSeeder {
                     .author(author1)
                     .isbn("9780307387349")
                     .publishedDate(LocalDate.of(1981, 12, 2))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/cronica_de_una_muerte_anunciada.jpg")
                     .build());
 
@@ -106,7 +106,7 @@ public class BookSeeder {
                     .author(author2)
                     .isbn("9780060927219")
                     .publishedDate(LocalDate.of(1994, 5, 20))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/paula.jpg")
                     .build());
 
@@ -116,7 +116,7 @@ public class BookSeeder {
                     .author(author3)
                     .isbn("9780312421892")
                     .publishedDate(LocalDate.of(1973, 8, 1))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/pantaleon_y_las_visitadoras.jpg")
                     .build());
 
@@ -126,7 +126,7 @@ public class BookSeeder {
                     .author(author1)
                     .isbn("9780060882860")
                     .publishedDate(LocalDate.of(1975, 6, 25))
-                    .isActive(true)
+                    .active(true)
                     .image("https://example.com/images/el_otono_del_patriarca.jpg")
                     .build());
 

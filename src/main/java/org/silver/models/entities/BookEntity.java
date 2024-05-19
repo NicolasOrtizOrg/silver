@@ -32,7 +32,7 @@ public class BookEntity {
     private LocalDate publishedDate;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     @ManyToOne
     private AuthorEntity author;

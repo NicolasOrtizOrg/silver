@@ -3,10 +3,10 @@ package org.silver.controllers;
 import org.silver.mappers.BookMapper;
 import org.silver.models.dtos.books.BookRequestDto;
 import org.silver.models.dtos.books.BookSearchQuery;
-import org.silver.models.dtos.books.BookResponseDto;
+import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.entities.BookEntity;
 import org.silver.services.IBookService;
-import org.silver.utils.PaginationConfig;
+import org.silver.utils.PaginationUtils;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -36,41 +36,41 @@ public class BooksController {
 
 
     @GetMapping
-    public ResponseEntity<Page<BookResponseDto>> getAllActive(@RequestParam int page) {
-        Pageable pageable = PaginationConfig.setPagination(page);
+    public ResponseEntity<Page<BookFullDto>> getAllActive(@RequestParam int page) {
+        Pageable pageable = PaginationUtils.setPagination(page);
         return new ResponseEntity<>(bookService.findAllActive(pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/{bookId}")
-    public ResponseEntity<BookResponseDto> getByBookId(@PathVariable Long bookId) {
+    public ResponseEntity<BookFullDto> getByBookId(@PathVariable Long bookId) {
         return new ResponseEntity<>(bookService.findById(bookId), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<BookResponseDto>> getByTitleOrAuthorName(@RequestParam String keyword,
-                                                                        @RequestParam int page) {
-        Pageable pageable = PaginationConfig.setPagination(page);
+    public ResponseEntity<Page<BookFullDto>> getByTitleOrAuthorName(@RequestParam String keyword,
+                                                                    @RequestParam int page) {
+        Pageable pageable = PaginationUtils.setPagination(page);
         return new ResponseEntity<>(bookService.findByTitleOrAuthorName(keyword, pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/author")
-    public ResponseEntity<Page<BookResponseDto>> getByAuthorName(@RequestParam String authorName,
-                                                                 @RequestParam int page) {
-        Pageable pageable = PaginationConfig.setPagination(page);
+    public ResponseEntity<Page<BookFullDto>> getByAuthorName(@RequestParam String authorName,
+                                                             @RequestParam int page) {
+        Pageable pageable = PaginationUtils.setPagination(page);
         return new ResponseEntity<>(bookService.findByAuthor(authorName, pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/q")
-    public ResponseEntity<Page<BookResponseDto>> getByDynamicQuery(BookSearchQuery bookRequest,
-                                                                   @RequestParam int page) {
+    public ResponseEntity<Page<BookFullDto>> getByDynamicQuery(BookSearchQuery bookRequest,
+                                                               @RequestParam int page) {
         BookEntity bookEntity = BookMapper.queryToEntity(bookRequest);
 
         // Configuración de Paginación
-        Pageable pageable = PaginationConfig.setPagination(page);
+        Pageable pageable = PaginationUtils.setPagination(page);
 
         // Configuración de Queries dinámicas
         ExampleMatcher matcher = ExampleMatcher

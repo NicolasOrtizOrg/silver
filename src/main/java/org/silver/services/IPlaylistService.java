@@ -6,17 +6,16 @@ import java.util.List;
 
 public interface IPlaylistService {
 
-    List<PlaylistSimpleDto> findByUserId(Long userId);
+    List<PlaylistSimpleDto> findByUserId();
 
     PlaylistSimpleDto findByPlaylistId(Long playlistId);
 
-    void savePlaylist(String playlistName, Long userId);
+    void savePlaylist(String playlistName);
 
     void deletePlaylist(Long playlistId);
 
     void addBook(Long bookId, Long playlistId);
 
     void removeBook(Long bookId, Long playlistId);
-
 
 }
