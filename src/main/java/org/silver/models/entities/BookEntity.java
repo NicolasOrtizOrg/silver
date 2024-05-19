@@ -22,8 +22,8 @@ public class BookEntity {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
-    private AuthorEntity author;
+    @Column(nullable = false)
+    private String image;
 
     @Column(nullable = false, unique = true)
     private String isbn;
@@ -33,5 +33,8 @@ public class BookEntity {
 
     @Column(nullable = false)
     private boolean isActive;
+
+    @ManyToOne
+    private AuthorEntity author;
 
 }

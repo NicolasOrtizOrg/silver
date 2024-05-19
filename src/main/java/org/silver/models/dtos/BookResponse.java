@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public record BookResponse(
         Long id,
         String title,
+        String image,
         String description,
         AuthorEntity author,
         String isbn,
