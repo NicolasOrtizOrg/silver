@@ -1,6 +1,6 @@
 package org.silver.services;
 
-import org.silver.models.dtos.books.BookRequestDto;
+import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.entities.BookEntity;
 import org.springframework.data.domain.Example;
@@ -19,9 +19,9 @@ public interface IBookService {
 
     Page<BookFullDto> findByTitleOrAuthorName(String keyword, Pageable pageable);
 
-    void save(BookRequestDto bookDto);
+    void save(BookCreateDto bookDto);
 
-    void update(Long id, BookRequestDto bookDto);
+    void update(Long id, BookCreateDto bookDto);
 
     void changeStatus(Long id, boolean status);
 

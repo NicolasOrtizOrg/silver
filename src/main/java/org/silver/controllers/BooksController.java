@@ -1,7 +1,7 @@
 package org.silver.controllers;
 
 import org.silver.mappers.BookMapper;
-import org.silver.models.dtos.books.BookRequestDto;
+import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookSearchQuery;
 import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.entities.BookEntity;
@@ -73,25 +73,25 @@ public class BooksController {
         Pageable pageable = PaginationUtils.setPagination(page);
 
         // Configuración de Queries dinámicas
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withMatcher("title", ExampleMatcher.GenericPropertyMatchers.contains());
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("title", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains());
         Example<BookEntity> example = Example.of(bookEntity, matcher);
 
         return new ResponseEntity<>(bookService.findByDynamicQuery(example, pageable), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody BookRequestDto bookRequestDto) {
-        bookService.save(bookRequestDto);
+    public ResponseEntity<Void> save(@RequestBody BookCreateDto bookCreateDto) {
+        bookService.save(bookCreateDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{bookId}")
     public ResponseEntity<Void> update(@PathVariable Long bookId,
-                                       @RequestBody BookRequestDto bookRequestDto) {
-        bookService.update(bookId, bookRequestDto);
+                                       @RequestBody BookCreateDto bookCreateDto) {
+        bookService.update(bookId, bookCreateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

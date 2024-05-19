@@ -1,9 +1,10 @@
 package org.silver.mappers;
 
-import org.silver.models.dtos.books.BookRequestDto;
+import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.dtos.books.BookSearchQuery;
 import org.silver.models.dtos.books.BookSimpleDto;
+import org.silver.models.entities.AuthorEntity;
 import org.silver.models.entities.BookEntity;
 
 
@@ -12,7 +13,7 @@ public class BookMapper {
     private BookMapper() {
     }
 
-    public static BookEntity requestToEntity(BookRequestDto bookDto) {
+    public static BookEntity requestToEntity(BookCreateDto bookDto) {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
@@ -50,6 +51,21 @@ public class BookMapper {
                 .title(bookEntity.getTitle())
                 .author(bookEntity.getAuthor())
                 .image(bookEntity.getImage())
+                .build();
+    }
+
+    public static BookEntity toUpdate(BookCreateDto source, BookEntity destination){
+        AuthorEntity author = new AuthorEntity();
+        author.setName(source.authorName());
+
+        return BookEntity.builder()
+                .id(destination.getId())
+                .title(source.title())
+                .description(source.description())
+                .image(source.image())
+                .isbn(source.isbn())
+                .publishedDate(source.publishedDate())
+//                .author(author)
                 .build();
     }
 
