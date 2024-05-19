@@ -7,13 +7,16 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements CommandLineRunner {
 
     private final BookSeeder bookSeeder;
+    private final UserSeeder userSeeder;
 
-    public DataLoader(BookSeeder bookSeeder) {
+    public DataLoader(BookSeeder bookSeeder, UserSeeder userSeeder) {
         this.bookSeeder = bookSeeder;
+        this.userSeeder = userSeeder;
     }
 
     @Override
     public void run(String... args) throws Exception {
         bookSeeder.loadData();
+        userSeeder.loadData();
     }
 }
