@@ -2,7 +2,6 @@ package org.silver.seeders;
 
 import org.silver.models.entities.AuthorEntity;
 import org.silver.models.entities.BookEntity;
-import org.silver.models.entities.CategoryEntity;
 import org.silver.repositories.IBooksRepository;
 import org.springframework.stereotype.Component;
 

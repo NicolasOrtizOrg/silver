@@ -42,14 +42,8 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<BookResponse> findAll(Pageable pageable) {
-        return booksRepository.findAll(pageable).map(BookMapper::toDto);
-    }
-
-    @Override
-    public Page<BookResponse> findByTitleOrAuthor(String keyword, Pageable pageable) {
-        return booksRepository.findByTitleOrAuthorName(keyword, pageable)
-                .map(BookMapper::toDto);
+    public Page<BookResponse> findAllActive(Pageable pageable) {
+        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toDto);
     }
 
     @Override
@@ -59,14 +53,8 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<BookResponse> findByTitle(String title, Pageable pageable) {
-        return booksRepository.findByTitleContainsIgnoreCase(title, pageable)
-                .map(BookMapper::toDto);
-    }
-
-    @Override
-    public Page<BookResponse> findByCategory(String categoryName, Pageable pageable) {
-        return booksRepository.findByCategoryName(categoryName, pageable)
+    public Page<BookResponse> findByTitleOrAuthorName(String keyword, Pageable pageable) {
+        return booksRepository.findByTitleOrAuthorName(keyword, pageable)
                 .map(BookMapper::toDto);
     }
 
@@ -119,7 +107,7 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<BookResponse> findByQuery(Example<BookEntity> example, Pageable pageable) {
+    public Page<BookResponse> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
         return booksRepository.findAll(example, pageable)
                 .map(BookMapper::toDto);
     }

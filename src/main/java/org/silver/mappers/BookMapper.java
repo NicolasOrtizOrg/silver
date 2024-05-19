@@ -37,6 +37,7 @@ public class BookMapper {
                 .isbn(bookEntity.getIsbn())
                 .publishedDate(bookEntity.getPublishedDate())
                 .isActive(true)
+                .author(bookEntity.getAuthor())
                 .build();
     }
 

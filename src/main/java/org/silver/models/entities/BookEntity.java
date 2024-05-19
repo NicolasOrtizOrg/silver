@@ -25,9 +25,6 @@ public class BookEntity {
     @ManyToOne
     private AuthorEntity author;
 
-    @ManyToOne
-    private CategoryEntity category;
-
     @Column(nullable = false, unique = true)
     private String isbn;
 
