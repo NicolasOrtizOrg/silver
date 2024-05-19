@@ -1,4 +1,4 @@
-package org.silver.models.dtos;
+package org.silver.models.dtos.books;
 
 
 public record BookSearchQuery(

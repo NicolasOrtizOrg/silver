@@ -1,9 +1,9 @@
 package org.silver.controllers;
 
 import org.silver.mappers.BookMapper;
-import org.silver.models.dtos.BookRequest;
-import org.silver.models.dtos.BookSearchQuery;
-import org.silver.models.dtos.BookResponse;
+import org.silver.models.dtos.books.BookRequestDto;
+import org.silver.models.dtos.books.BookSearchQuery;
+import org.silver.models.dtos.books.BookResponseDto;
 import org.silver.models.entities.BookEntity;
 import org.silver.services.IBookService;
 import org.silver.utils.PaginationConfig;
@@ -36,37 +36,37 @@ public class BooksController {
 
 
     @GetMapping
-    public ResponseEntity<Page<BookResponse>> getAllActive(@RequestParam int page) {
+    public ResponseEntity<Page<BookResponseDto>> getAllActive(@RequestParam int page) {
         Pageable pageable = PaginationConfig.setPagination(page);
         return new ResponseEntity<>(bookService.findAllActive(pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/{bookId}")
-    public ResponseEntity<BookResponse> getByBookId(@PathVariable Long bookId) {
+    public ResponseEntity<BookResponseDto> getByBookId(@PathVariable Long bookId) {
         return new ResponseEntity<>(bookService.findById(bookId), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<BookResponse>> getByTitleOrAuthorName(@RequestParam String keyword,
-                                                                 @RequestParam int page) {
+    public ResponseEntity<Page<BookResponseDto>> getByTitleOrAuthorName(@RequestParam String keyword,
+                                                                        @RequestParam int page) {
         Pageable pageable = PaginationConfig.setPagination(page);
         return new ResponseEntity<>(bookService.findByTitleOrAuthorName(keyword, pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/author")
-    public ResponseEntity<Page<BookResponse>> getByAuthorName(@RequestParam String authorName,
-                                                              @RequestParam int page) {
+    public ResponseEntity<Page<BookResponseDto>> getByAuthorName(@RequestParam String authorName,
+                                                                 @RequestParam int page) {
         Pageable pageable = PaginationConfig.setPagination(page);
         return new ResponseEntity<>(bookService.findByAuthor(authorName, pageable), HttpStatus.OK);
     }
 
 
     @GetMapping("/filter/q")
-    public ResponseEntity<Page<BookResponse>> getByDynamicQuery(BookSearchQuery bookRequest,
-                                                                @RequestParam int page) {
+    public ResponseEntity<Page<BookResponseDto>> getByDynamicQuery(BookSearchQuery bookRequest,
+                                                                   @RequestParam int page) {
         BookEntity bookEntity = BookMapper.queryToEntity(bookRequest);
 
         // Configuración de Paginación
@@ -82,16 +82,16 @@ public class BooksController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody BookRequest bookRequest) {
-        bookService.save(bookRequest);
+    public ResponseEntity<Void> save(@RequestBody BookRequestDto bookRequestDto) {
+        bookService.save(bookRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{bookId}")
     public ResponseEntity<Void> update(@PathVariable Long bookId,
-                                       @RequestBody BookRequest bookRequest) {
-        bookService.update(bookId, bookRequest);
+                                       @RequestBody BookRequestDto bookRequestDto) {
+        bookService.update(bookId, bookRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

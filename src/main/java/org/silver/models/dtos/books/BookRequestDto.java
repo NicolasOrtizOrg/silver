@@ -1,8 +1,8 @@
-package org.silver.models.dtos;
+package org.silver.models.dtos.books;
 
 import java.time.LocalDate;
 
-public record BookRequest(
+public record BookRequestDto(
         String title,
         String description,
         String image,

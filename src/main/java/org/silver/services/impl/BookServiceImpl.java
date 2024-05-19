@@ -5,8 +5,8 @@ import org.silver.exceptions.BookExistsEx;
 import org.silver.exceptions.BookNotFoundEx;
 import org.silver.exceptions.GenericException;
 import org.silver.mappers.BookMapper;
-import org.silver.models.dtos.BookRequest;
-import org.silver.models.dtos.BookResponse;
+import org.silver.models.dtos.books.BookRequestDto;
+import org.silver.models.dtos.books.BookResponseDto;
 import org.silver.models.entities.AuthorEntity;
 import org.silver.models.entities.BookEntity;
 import org.silver.repositories.IBooksRepository;
@@ -35,32 +35,32 @@ public class BookServiceImpl implements IBookService {
 
 
     @Override
-    public BookResponse findById(Long id) {
+    public BookResponseDto findById(Long id) {
         BookEntity bookDB = booksRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundEx(BOOK_NOT_FOUND));
         return BookMapper.toDto(bookDB);
     }
 
     @Override
-    public Page<BookResponse> findAllActive(Pageable pageable) {
+    public Page<BookResponseDto> findAllActive(Pageable pageable) {
         return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toDto);
     }
 
     @Override
-    public Page<BookResponse> findByAuthor(String authorName, Pageable pageable) {
+    public Page<BookResponseDto> findByAuthor(String authorName, Pageable pageable) {
         return booksRepository.findByAuthorName(authorName, pageable)
                 .map(BookMapper::toDto);
     }
 
     @Override
-    public Page<BookResponse> findByTitleOrAuthorName(String keyword, Pageable pageable) {
+    public Page<BookResponseDto> findByTitleOrAuthorName(String keyword, Pageable pageable) {
         return booksRepository.findByTitleOrAuthorName(keyword, pageable)
                 .map(BookMapper::toDto);
     }
 
     @Transactional
     @Override
-    public void save(BookRequest bookDto) {
+    public void save(BookRequestDto bookDto) {
         try {
             AuthorEntity authorDB = authorService.getOrSave(bookDto.author());
 
@@ -77,7 +77,7 @@ public class BookServiceImpl implements IBookService {
 
     @Transactional
     @Override
-    public void update(Long id, BookRequest bookDto) {
+    public void update(Long id, BookRequestDto bookDto) {
         BookEntity bookDB = booksRepository.findById(id)
                 .orElseThrow(()-> new BookNotFoundEx(BOOK_NOT_FOUND));
 
@@ -107,7 +107,7 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
-    public Page<BookResponse> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
+    public Page<BookResponseDto> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
         return booksRepository.findAll(example, pageable)
                 .map(BookMapper::toDto);
     }

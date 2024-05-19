@@ -3,7 +3,6 @@ package org.silver.models.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Getter
 @Setter
@@ -11,17 +10,17 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "playlists")
-public class PlaylistEntity {
+@Table(name = "playlists_books")
+public class PlaylistBookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    private PlaylistEntity playlist;
 
     @ManyToOne
-    private UserEntity user;
+    private BookEntity book;
 
 }
