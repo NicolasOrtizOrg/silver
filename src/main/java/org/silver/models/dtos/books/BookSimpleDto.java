@@ -4,6 +4,9 @@ import lombok.Builder;
 import org.silver.models.entities.AuthorEntity;
 
 
+/**
+ * DTO simple
+ * */
 @Builder
 public record BookSimpleDto(
         Long id,

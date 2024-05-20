@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Sirve para guardar HEADERS de la petición que recibe la API.
+ * Lo uso para obtener el userId de los headers, ya que no estoy usando Spring Security ni tokens.
+ * */
 @Component
 public class HeaderUtils {
 

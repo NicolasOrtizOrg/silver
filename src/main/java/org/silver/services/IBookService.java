@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
 
-    Page<BookFullDto> findByDynamicQuery(Example<BookEntity> example, Pageable pageable);
+    Page<BookFullDto> findByDynamicQuery(Example<BookEntity> dynamicDto, Pageable pageable);
 
-    BookFullDto findById(Long id);
+    BookFullDto findById(Long bookId);
 
     Page<BookFullDto> findAllActive(Pageable pageable);
 
@@ -21,8 +21,8 @@ public interface IBookService {
 
     void save(BookCreateDto bookDto);
 
-    void update(Long id, BookCreateDto bookDto);
+    void update(Long bookId, BookCreateDto bookDto);
 
-    void changeStatus(Long id, boolean status);
+    void changeStatus(Long bookId, boolean status);
 
 }

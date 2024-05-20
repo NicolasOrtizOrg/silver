@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cargar Books al iniciar el proyecto
+ * */
 @Component
 public class BookSeeder {
 

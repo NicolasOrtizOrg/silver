@@ -4,6 +4,9 @@ import org.silver.models.entities.UserEntity;
 import org.silver.repositories.IUserRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Cargar Users al iniciar el proyecto
+ * */
 @Component
 public class UserSeeder {
 

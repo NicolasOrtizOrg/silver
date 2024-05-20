@@ -12,35 +12,40 @@ public class PlaylistMapper {
     private PlaylistMapper() {
     }
 
-    public static PlaylistSimpleDto toDto(PlaylistEntity entity){
+    /**
+     * Mapear Entity a SimpleDto
+     * */
+    public static PlaylistSimpleDto toSimpleDtoFromEntity(PlaylistEntity entity){
         return PlaylistSimpleDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .build();
     }
 
-    public static PlaylistBookEntity idsToEntity(Long bookId, Long playlistId){
-        BookEntity book = new BookEntity();
-        book.setId(bookId);
-        PlaylistEntity playlist = new PlaylistEntity();
-        playlist.setId(playlistId);
-
-        return PlaylistBookEntity.builder()
-                .book(book)
-                .playlist(playlist)
+    /**
+     * Crear Entity para guardar la Playlist
+     * */
+    public static PlaylistEntity toEntity(String playlistName, Long userId){
+        return PlaylistEntity.builder()
+                .name(playlistName)
+                .user(UserEntity.builder()
+                        .id(userId)
+                        .build())
                 .build();
     }
 
-    public static PlaylistEntity nameToEntity(String playlistName, Long userId){
-        PlaylistEntity playlist = new PlaylistEntity();
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setId(userId);
-
-        playlist.setName(playlistName);
-        playlist.setUser(userEntity);
-
-        return playlist;
+    /**
+     * Crear Entity para meter un Book dentro dn una Playlist
+     * */
+    public static PlaylistBookEntity toEntity(Long bookId, Long playlistId){
+        return PlaylistBookEntity.builder()
+                .book(BookEntity.builder()
+                        .id(bookId)
+                        .build())
+                .playlist(PlaylistEntity.builder()
+                        .id(playlistId)
+                        .build())
+                .build();
     }
 
 }

@@ -2,11 +2,9 @@ package org.silver.models.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
-//@DynamicUpdate
 @Entity
 @Getter @Setter @ToString
 @Data

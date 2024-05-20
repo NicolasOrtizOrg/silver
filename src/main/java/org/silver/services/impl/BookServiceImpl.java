@@ -33,44 +33,75 @@ public class BookServiceImpl implements IBookService {
     }
 
 
+    /**
+     * Busca lista de Book mediante una Query dinámica gracias a la interfaz Example<>.
+     * La Query se genera dependiendo los atributos que se reciban en el DTO.
+     * @param dynamicDto: DTO con atributos dinámicos.
+     * @return Lista de Book que coincidan con la búsqueda. Con Paginación.
+     * */
     @Override
-    public Page<BookFullDto> findByDynamicQuery(Example<BookEntity> example, Pageable pageable) {
-        return booksRepository.findAll(example, pageable)
-                .map(BookMapper::toFullDto);
+    public Page<BookFullDto> findByDynamicQuery(Example<BookEntity> dynamicDto, Pageable pageable) {
+        return booksRepository.findAll(dynamicDto, pageable)
+                .map(BookMapper::toFullDtoFromEntity);
     }
 
+    /**
+     * Busca un Book por su ID
+     * @param bookId: ID del libro.
+     * @return Book Dto
+     * */
     @Override
-    public BookFullDto findById(Long id) {
-        BookEntity bookDB = booksRepository.findById(id)
+    public BookFullDto findById(Long bookId) {
+        BookEntity bookDB = booksRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundEx(BOOK_NOT_FOUND));
-        return BookMapper.toFullDto(bookDB);
+        return BookMapper.toFullDtoFromEntity(bookDB);
     }
 
+    /**
+     * Busca todos los Books que tengan atributo Active=true.
+     * Lo devuelve con paginación.
+     * */
     @Override
     public Page<BookFullDto> findAllActive(Pageable pageable) {
-        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toFullDto);
+        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toFullDtoFromEntity);
     }
 
+    /**
+     * Busca todos los Books por el nombre de su Author.
+     * Lo devuelve con paginación.
+     * */
     @Override
     public Page<BookFullDto> findByAuthor(String authorName, Pageable pageable) {
         return booksRepository.findByAuthorNameContainingIgnoreCase(authorName, pageable)
-                .map(BookMapper::toFullDto);
+                .map(BookMapper::toFullDtoFromEntity);
     }
 
+    /**
+     * Busca todos los Books que en su Title o AuthorName contengan la palabra del parámetro "keyword".
+     * Lo devuelve con paginación.
+     * */
     @Override
     public Page<BookFullDto> findByTitleOrAuthorName(String keyword, Pageable pageable) {
         return booksRepository.findByTitleOrAuthorName(keyword, pageable)
-                .map(BookMapper::toFullDto);
+                .map(BookMapper::toFullDtoFromEntity);
     }
 
 
+    /**
+     * Guarda un Book.
+     * Si el Author NO existe en la base de datos, también se guarda.
+     * @param bookDto: DTO del libro a guardar.
+     * */
     @Transactional
     @Override
     public void save(BookCreateDto bookDto) {
         try {
+            // Buscar Author en base de datos si existe, o guardar si no existe
             AuthorEntity authorDB = authorService.getOrSave(bookDto.authorName());
 
-            BookEntity bookEntity = BookMapper.requestToEntity(bookDto);
+            // Mapear DTO a Entity
+            BookEntity bookEntity = BookMapper.toEntityFromRequest(bookDto);
+
             bookEntity.setAuthor(authorDB);
 
             booksRepository.save(bookEntity);
@@ -81,11 +112,17 @@ public class BookServiceImpl implements IBookService {
         }
     }
 
+    /**
+     * Modifica / Actualiza un Book.
+     * Para modificar de manera dinámica, usar @DynamicUpdate y mi clase JpaUtils
+     * @param bookId: ID del libro a modificar.
+     * @param bookDto: DTO del libro con todos sus atributos. No puede contener nulos.
+     * */
     @Transactional
     @Override
-    public void update(Long id, BookCreateDto bookDto) {
+    public void update(Long bookId, BookCreateDto bookDto) {
         // Obtener Book de base de datos
-        Optional<BookEntity> bookDB = booksRepository.findById(id);
+        Optional<BookEntity> bookDB = booksRepository.findById(bookId);
         if (bookDB.isEmpty())
             throw new BookNotFoundEx(BOOK_NOT_FOUND);
 
@@ -93,11 +130,11 @@ public class BookServiceImpl implements IBookService {
         AuthorEntity authorDB = authorService.getOrSave(bookDto.authorName());
 
         // Mapear de DTO a Entidad
-        BookEntity updatedBook = BookMapper.requestToEntity(bookDto);
+        BookEntity updatedBook = BookMapper.toEntityFromRequest(bookDto);
 
         // Asignar campos obtenidos de base de datos
         updatedBook.setAuthor(authorDB);
-        updatedBook.setId(id);
+        updatedBook.setId(bookId);
 
         try {
             booksRepository.save(updatedBook);
@@ -108,11 +145,17 @@ public class BookServiceImpl implements IBookService {
         }
     }
 
+    /**
+     * Soft Delete.
+     * Cambia el estado del atributo Active.
+     * @param bookId: ID del libro.
+     * @param status: estado del Book. TRUE/FALSE.
+     * */
     @Transactional
     @Override
-    public void changeStatus(Long id, boolean status) {
-        if (booksRepository.existsById(id))
-            booksRepository.changeStatus(id, status);
+    public void changeStatus(Long bookId, boolean status) {
+        if (booksRepository.existsById(bookId))
+            booksRepository.changeStatus(bookId, status);
         else
             throw new BookNotFoundEx(BOOK_NOT_FOUND);
     }

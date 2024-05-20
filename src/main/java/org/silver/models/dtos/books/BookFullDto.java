@@ -6,6 +6,9 @@ import org.silver.models.entities.AuthorEntity;
 import java.time.LocalDate;
 
 
+/**
+ * DTO con todos los datos completos
+ * */
 @Builder
 public record BookFullDto(
         Long id,

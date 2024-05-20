@@ -29,12 +29,18 @@ public class BooksController {
     }
 
 
+    /** Eliminar campos vacíos en las requests */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
 
+    /**
+     * Buscar todos los libros activos.
+     * @param page: número de página.
+     * @return lista de Books con paginación.
+     * */
     @GetMapping
     public ResponseEntity<Page<BookFullDto>> getAllActive(@RequestParam int page) {
         Pageable pageable = PaginationUtils.setPagination(page);
@@ -42,12 +48,23 @@ public class BooksController {
     }
 
 
+    /**
+     * Buscar Book por su ID.
+     * @param bookId: ID del libro.
+     * @return Book.
+     * */
     @GetMapping("/filter/{bookId}")
     public ResponseEntity<BookFullDto> getByBookId(@PathVariable Long bookId) {
         return new ResponseEntity<>(bookService.findById(bookId), HttpStatus.OK);
     }
 
 
+    /**
+     * Buscar todos los Book que contengan la palabra clave en su Title o AuthorName.
+     * @param keyword: palabra clave.
+     * @param page: número de página.
+     * @return lista de libros con paginación.
+     * */
     @GetMapping("/filter")
     public ResponseEntity<Page<BookFullDto>> getByTitleOrAuthorName(@RequestParam String keyword,
                                                                     @RequestParam int page) {
@@ -56,6 +73,12 @@ public class BooksController {
     }
 
 
+    /**
+     * Buscar todos los Book de un Author por su nombre.
+     * @param authorName: nombre del Author.
+     * @param page: número de página.
+     * @return lista de libros con paginación.
+     * */
     @GetMapping("/filter/author")
     public ResponseEntity<Page<BookFullDto>> getByAuthorName(@RequestParam String authorName,
                                                              @RequestParam int page) {
@@ -64,10 +87,17 @@ public class BooksController {
     }
 
 
+    /**
+     * Buscar Books mediante Queries dinámicas a través de los atributos obtenidos en el DTO.
+     * @param bookRequest: DTO de Book con atributos que coincidan con la búsqueda.
+     * @param page: número de página.
+     * @return lista de libros con paginación.
+     * */
     @GetMapping("/filter/q")
     public ResponseEntity<Page<BookFullDto>> getByDynamicQuery(BookSearchQuery bookRequest,
                                                                @RequestParam int page) {
-        BookEntity bookEntity = BookMapper.queryToEntity(bookRequest);
+        // Mapear DTO a entidad
+        BookEntity bookEntity = BookMapper.toEntityFromQuery(bookRequest);
 
         // Configuración de Paginación
         Pageable pageable = PaginationUtils.setPagination(page);
@@ -81,6 +111,10 @@ public class BooksController {
         return new ResponseEntity<>(bookService.findByDynamicQuery(example, pageable), HttpStatus.OK);
     }
 
+    /**
+     * Guardar un Book.
+     * @param bookCreateDto: DTO del Book.
+     * */
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody BookCreateDto bookCreateDto) {
         bookService.save(bookCreateDto);
@@ -88,6 +122,11 @@ public class BooksController {
     }
 
 
+    /**
+     * Modificar/Actualizar un Book.
+     * @param bookId: ID del libro a modificar.
+     * @param bookCreateDto: DTO del Book.
+     * */
     @PutMapping("/{bookId}")
     public ResponseEntity<Void> update(@PathVariable Long bookId,
                                        @RequestBody BookCreateDto bookCreateDto) {
@@ -96,6 +135,11 @@ public class BooksController {
     }
 
 
+    /**
+     * Soft Delete. Modificar estado de un Book.
+     * @param bookId: ID del libro a modificar.
+     * @param status: estado del Book. TRUE/FALSE.
+     * */
     @PatchMapping("/{bookId}/{status}")
     public ResponseEntity<Void> changeStatus(@PathVariable Long bookId,
                                              @PathVariable boolean status) {

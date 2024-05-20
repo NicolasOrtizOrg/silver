@@ -6,6 +6,11 @@ public class JpaUtils {
 
     private JpaUtils(){}
 
+    /**
+     * Copia los atributos no nulos de una clase a la otra.
+     * Sirve para mapear/copiar los atributos no nulos de un DTO a un Entity.
+     * Sirve para generar consultas UPDATE dinámicas en la base de datos.
+     * */
     public static void copyNonNullProperties(Object source, Object target) {
         Field[] fields = source.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -18,7 +23,8 @@ public class JpaUtils {
                     targetField.set(target, value);
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new RuntimeException(e);
+                //
+                // throw new RuntimeException(e);
             }
         }
     }

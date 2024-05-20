@@ -32,28 +32,44 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
 
+    /**
+     * Busca una lista de Playlist de un User.
+     * El userId lo obtiene desde los headers de la petición.
+     * @return lista de playlists de un usuario.
+     * */
     @Override
     public List<PlaylistSimpleDto> findByUserId() {
         Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
         return playlistRepository
                 .findByUserId(userId)
                 .stream()
-                .map(PlaylistMapper::toDto)
+                .map(PlaylistMapper::toSimpleDtoFromEntity)
                 .toList();
     }
 
+    /**
+     * Busca una Playlist por su ID.
+     * @param playlistId: ID de la playlist.
+     * @return Playlist con sus libros.
+     * BADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+     * Deberia devolver todos los libros de la playlist.
+     * */
     @Override
     public PlaylistSimpleDto findByPlaylistId(Long playlistId) {
         PlaylistEntity playlistEntity = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundEx(PLAYLIST_NOT_FOUND));
-        return PlaylistMapper.toDto(playlistEntity);
+        return PlaylistMapper.toSimpleDtoFromEntity(playlistEntity);
     }
 
+    /**
+     * Guardar Playlist
+     * @param playlistName: nombre de la playlist.
+     * */
     @Override
     public void savePlaylist(String playlistName) {
         try{
             Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
-            PlaylistEntity playlist = PlaylistMapper.nameToEntity(playlistName, userId);
+            PlaylistEntity playlist = PlaylistMapper.toEntity(playlistName, userId);
 
             playlistRepository.save(playlist);
         } catch (Exception ex){
@@ -61,6 +77,10 @@ public class PlaylistServiceImpl implements IPlaylistService {
         }
     }
 
+    /**
+     * Elimina una Playlist por su ID.
+     * @param playlistId: ID de la Playlist a eliminar.
+     * */
     @Override
     public void deletePlaylist(Long playlistId) {
         if (playlistRepository.existsById(playlistId))
@@ -69,10 +89,15 @@ public class PlaylistServiceImpl implements IPlaylistService {
             throw new PlaylistNotFoundEx(PLAYLIST_NOT_FOUND);
     }
 
+    /**
+     * Agrega un Book dentro de una Playlist.
+     * @param bookId: ID del Book.
+     * @param playlistId: ID de la Playlist.
+     * */
     @Override
     public void addBook(Long bookId, Long playlistId) {
         try {
-            PlaylistBookEntity midTable = PlaylistMapper.idsToEntity(bookId, playlistId);
+            PlaylistBookEntity midTable = PlaylistMapper.toEntity(bookId, playlistId);
             midRepository.save(midTable);
 
         } catch (DataIntegrityViolationException ex) {
@@ -84,6 +109,11 @@ public class PlaylistServiceImpl implements IPlaylistService {
         }
     }
 
+    /**
+     * Quita un Book de una Playlist.
+     * @param bookId: ID del Book.
+     * @param playlistId: ID de la Playlist.
+     * */
     @Override
     public void removeBook(Long bookId, Long playlistId) {
         PlaylistBookEntity midTable = midRepository.findByBookIdAndPlaylistId(playlistId, bookId)
