@@ -1,5 +1,6 @@
 package org.silver.controllers;
 
+import org.silver.integration.BookSearchFacade;
 import org.silver.mappers.BookMapper;
 import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookSearchQuery;
@@ -17,15 +18,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/books")
 public class BooksController {
 
     private final IBookService bookService;
+    private final BookSearchFacade bookSearchFacade;
 
-    public BooksController(IBookService bookService) {
+    public BooksController(IBookService bookService, BookSearchFacade bookSearchFacade) {
         this.bookService = bookService;
+        this.bookSearchFacade = bookSearchFacade;
     }
 
 
@@ -35,6 +40,10 @@ public class BooksController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
+    @GetMapping("/test/{title}")
+    public List<BookFullDto> test(@PathVariable String title){
+        return bookSearchFacade.searchBooksByTitle(title);
+    }
 
     /**
      * Buscar todos los libros activos.
