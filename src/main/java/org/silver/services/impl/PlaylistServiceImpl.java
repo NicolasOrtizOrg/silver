@@ -80,13 +80,13 @@ public class PlaylistServiceImpl implements IPlaylistService {
      */
     @Override
     public void savePlaylist(String playlistName) {
+        Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
         try {
-            Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
             PlaylistEntity playlist = PlaylistMapper.toEntity(playlistName, userId);
 
             playlistRepository.save(playlist);
-        } catch (Exception ex) {
-            throw new GenericException(ex.getMessage());
+        } catch (DataIntegrityViolationException ex) {
+            throw new GenericException("No existe el usuario con ese userId");
         }
     }
 
@@ -113,17 +113,16 @@ public class PlaylistServiceImpl implements IPlaylistService {
     public void addBook(Long bookId, Long playlistId) {
         try {
             if (midRepository.existsByBookIdAndPlaylistId(bookId, playlistId))
-                throw new GenericException("Ya tenés guardado ese libro en la playlist.");
+                throw new GenericException(RELATION_EXISTS);
 
             PlaylistBookEntity midTable = PlaylistMapper.toEntity(bookId, playlistId);
             midRepository.save(midTable);
 
-        } catch (Exception ex) {
+        } catch (DataIntegrityViolationException ex) {
             if (!bookRepository.existsById(bookId))
                 throw new BookNotFoundEx(BOOK_NOT_FOUND);
             if (!playlistRepository.existsById(playlistId))
                 throw new PlaylistNotFoundEx(PLAYLIST_NOT_FOUND);
-            throw new GenericException(ex.getMessage());
         }
     }
 
@@ -144,5 +143,6 @@ public class PlaylistServiceImpl implements IPlaylistService {
     private static final String PLAYLIST_NOT_FOUND = "Playlist no encontrada";
     private static final String BOOK_NOT_FOUND = "Libro no encontrado";
     private static final String RELATION_NOT_FOUND = "El libro no está en la playlist";
+    private static final String RELATION_EXISTS = "Ya tenés guardado ese libro en la playlist";
 
 }
