@@ -58,7 +58,7 @@ public class GoogleBooksAPI implements IBookApiService {
         return BookFullDto.builder()
                 .title(book.getVolumeInfo().getTitle())
                 .description(book.getVolumeInfo().getDescription())
-                .image(book.getVolumeInfo().getImageLinks().getSmallThumbnail())
+                .image("book.getVolumeInfo().getImageLinks().getSmallThumbnail()")
                 .isbn(book.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier())
                 .publishedDate(LocalDate.now()) // Fecha falsa
                 .author(author)
