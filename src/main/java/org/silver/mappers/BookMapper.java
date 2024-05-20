@@ -3,6 +3,7 @@ package org.silver.mappers;
 import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookFullDto;
 import org.silver.models.dtos.books.BookSearchQuery;
+import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.entities.BookEntity;
 
 
@@ -48,6 +49,18 @@ public class BookMapper {
                 .image(bookEntity.getImage())
                 .isbn(bookEntity.getIsbn())
                 .publishedDate(bookEntity.getPublishedDate())
+                .author(bookEntity.getAuthor())
+                .build();
+    }
+
+    /**
+     * Mapea una entidad a un DTO Simple.
+     * */
+    public static BookSimpleDto toSimpleDtoFromEntity(BookEntity bookEntity) {
+        return BookSimpleDto.builder()
+                .id(bookEntity.getId())
+                .title(bookEntity.getTitle())
+                .image(bookEntity.getImage())
                 .author(bookEntity.getAuthor())
                 .build();
     }

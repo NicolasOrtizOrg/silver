@@ -4,7 +4,10 @@ import org.silver.exceptions.BookNotFoundEx;
 import org.silver.exceptions.GenericException;
 import org.silver.exceptions.PlaylistNotFoundEx;
 import org.silver.exceptions.RelationNotFoundEx;
+import org.silver.mappers.BookMapper;
 import org.silver.mappers.PlaylistMapper;
+import org.silver.models.dtos.books.BookSimpleDto;
+import org.silver.models.dtos.playlist.PlaylistBooksDto;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
 import org.silver.models.entities.PlaylistBookEntity;
 import org.silver.models.entities.PlaylistEntity;
@@ -35,8 +38,9 @@ public class PlaylistServiceImpl implements IPlaylistService {
     /**
      * Busca una lista de Playlist de un User.
      * El userId lo obtiene desde los headers de la petición.
+     *
      * @return lista de playlists de un usuario.
-     * */
+     */
     @Override
     public List<PlaylistSimpleDto> findByUserId() {
         Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
@@ -49,38 +53,48 @@ public class PlaylistServiceImpl implements IPlaylistService {
 
     /**
      * Busca una Playlist por su ID.
+     *
      * @param playlistId: ID de la playlist.
      * @return Playlist con sus libros.
-     * BADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-     * Deberia devolver todos los libros de la playlist.
-     * */
+     */
     @Override
-    public PlaylistSimpleDto findByPlaylistId(Long playlistId) {
-        PlaylistEntity playlistEntity = playlistRepository.findById(playlistId)
+    public PlaylistBooksDto findByPlaylistId(Long playlistId) {
+
+        // Obtener playlist
+        PlaylistEntity playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new PlaylistNotFoundEx(PLAYLIST_NOT_FOUND));
-        return PlaylistMapper.toSimpleDtoFromEntity(playlistEntity);
+
+        // Obtener libros de la playlist
+        List<BookSimpleDto> books = midRepository.findByPlaylistId(playlistId)
+                .stream()
+                .map(book -> BookMapper.toSimpleDtoFromEntity(book.getBook()))
+                .toList();
+
+        return new PlaylistBooksDto(playlistId, playlist.getName(), books);
     }
 
     /**
      * Guardar Playlist
+     *
      * @param playlistName: nombre de la playlist.
-     * */
+     */
     @Override
     public void savePlaylist(String playlistName) {
-        try{
+        try {
             Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
             PlaylistEntity playlist = PlaylistMapper.toEntity(playlistName, userId);
 
             playlistRepository.save(playlist);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new GenericException(ex.getMessage());
         }
     }
 
     /**
      * Elimina una Playlist por su ID.
+     *
      * @param playlistId: ID de la Playlist a eliminar.
-     * */
+     */
     @Override
     public void deletePlaylist(Long playlistId) {
         if (playlistRepository.existsById(playlistId))
@@ -91,16 +105,20 @@ public class PlaylistServiceImpl implements IPlaylistService {
 
     /**
      * Agrega un Book dentro de una Playlist.
-     * @param bookId: ID del Book.
+     *
+     * @param bookId:     ID del Book.
      * @param playlistId: ID de la Playlist.
-     * */
+     */
     @Override
     public void addBook(Long bookId, Long playlistId) {
         try {
+            if (midRepository.existsByBookIdAndPlaylistId(bookId, playlistId))
+                throw new GenericException("Ya tenés guardado ese libro en la playlist.");
+
             PlaylistBookEntity midTable = PlaylistMapper.toEntity(bookId, playlistId);
             midRepository.save(midTable);
 
-        } catch (DataIntegrityViolationException ex) {
+        } catch (Exception ex) {
             if (!bookRepository.existsById(bookId))
                 throw new BookNotFoundEx(BOOK_NOT_FOUND);
             if (!playlistRepository.existsById(playlistId))
@@ -111,12 +129,13 @@ public class PlaylistServiceImpl implements IPlaylistService {
 
     /**
      * Quita un Book de una Playlist.
-     * @param bookId: ID del Book.
+     *
+     * @param bookId:     ID del Book.
      * @param playlistId: ID de la Playlist.
-     * */
+     */
     @Override
     public void removeBook(Long bookId, Long playlistId) {
-        PlaylistBookEntity midTable = midRepository.findByBookIdAndPlaylistId(playlistId, bookId)
+        PlaylistBookEntity midTable = midRepository.findByBookIdAndPlaylistId(bookId, playlistId)
                 .orElseThrow(() -> new RelationNotFoundEx(RELATION_NOT_FOUND));
 
         midRepository.deleteById(midTable.getId());

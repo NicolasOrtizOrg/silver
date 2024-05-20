@@ -2,6 +2,7 @@ package org.silver.interceptors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.silver.exceptions.GenericException;
 import org.silver.utils.HeaderUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,7 +14,7 @@ public class HeaderInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String userId = request.getHeader("userId");
         if (userId == null)
-            return false;
+            throw new GenericException("Deberías agregar un 'userId' en los headers para hacer peticiones a este endpoint.");
 
         HeaderUtils.saveHeader("userId", userId);
         return true;
