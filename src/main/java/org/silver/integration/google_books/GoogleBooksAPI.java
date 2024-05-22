@@ -29,7 +29,7 @@ public class GoogleBooksAPI implements IBookApiService {
     }
 
     @Override
-    public List<BookFullDto> searchBooks(String title) {
+    public List<BookFullDto> searchByTitle(String title) {
         URI urlFinal = UriComponentsBuilder.fromHttpUrl(URL_BASE)
                 .queryParam("q", "+intitle:".concat(title))
                 .queryParam("maxResults", "10")
@@ -44,6 +44,25 @@ public class GoogleBooksAPI implements IBookApiService {
 
         return mapToList(response.getItems());
     }
+
+    @Override
+    public List<BookFullDto> searchByAuthor(String author) {
+        URI urlFinal = UriComponentsBuilder.fromHttpUrl(URL_BASE)
+                .queryParam("q", "+inauthor:".concat(author))
+                .queryParam("maxResults", "10")
+                .build()
+                .toUri();
+
+        GoogleApiModel response = restTemplate
+                .getForObject(urlFinal, GoogleApiModel.class);
+
+        if (response == null)
+            return Collections.emptyList();
+
+        return mapToList(response.getItems());
+    }
+
+
 
     private List<BookFullDto> mapToList(List<GoogleBookModel> books) {
         return books.stream()

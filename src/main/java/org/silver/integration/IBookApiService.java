@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IBookApiService {
 
-    List<BookFullDto> searchBooks(String title);
+    List<BookFullDto> searchByTitle(String title);
+
+    List<BookFullDto> searchByAuthor(String title);
 
 }

@@ -118,7 +118,16 @@ public class BooksController {
     public ResponseEntity<Page<BookFullDto>> getByAuthorName(@RequestParam String authorName,
                                                              @RequestParam int page) {
         Pageable pageable = PaginationUtils.setPagination(page);
-        return new ResponseEntity<>(bookService.findByAuthor(authorName, pageable), HttpStatus.OK);
+
+        Page<BookFullDto> books = bookService.findByAuthor(authorName, pageable);
+
+        // Verificar si nuestra base de datos tiene los libros buscados.
+        // Si no existen, los va a buscar en la API externa.
+        if (books.getContent().isEmpty()){
+            books = new PageImpl<>(bookSearchFacade.searchBooksByAuthor(authorName));
+        }
+
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
 

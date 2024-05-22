@@ -40,7 +40,7 @@ public class BookSeeder {
                     .isbn("9780307474728")
                     .publishedDate(LocalDate.of(1967, 5, 30))
                     .active(true)
-                    .image("https://example.com/images/cien_anos_de_soledad.jpg")
+                    .image("https://images.cdn3.buscalibre.com/fit-in/360x360/61/8d/618d227e8967274cd9589a549adff52d.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -50,7 +50,7 @@ public class BookSeeder {
                     .isbn("9780307389732")
                     .publishedDate(LocalDate.of(1985, 10, 5))
                     .active(true)
-                    .image("https://example.com/images/el_amor_en_los_tiempos_del_colera.jpg")
+                    .image("https://centrogabo.org/sites/default/files/Imagenes/el_amor_en_los_tiempos_del_colera_0.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -60,7 +60,7 @@ public class BookSeeder {
                     .isbn("9780553383804")
                     .publishedDate(LocalDate.of(1982, 4, 12))
                     .active(true)
-                    .image("https://example.com/images/la_casa_de_los_espiritus.jpg")
+                    .image("https://www.tematika.com/media/catalog/Ilhsa/Imagenes/706758.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -70,7 +70,7 @@ public class BookSeeder {
                     .isbn("9780374530536")
                     .publishedDate(LocalDate.of(1984, 11, 10))
                     .active(true)
-                    .image("https://example.com/images/de_amor_y_de_sombra.jpg")
+                    .image("https://www.penguinlibros.com/ar/1595935/de-amor-y-de-sombra.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -80,7 +80,7 @@ public class BookSeeder {
                     .isbn("9780060732790")
                     .publishedDate(LocalDate.of(1963, 10, 13))
                     .active(true)
-                    .image("https://example.com/images/la_ciudad_y_los_perros.jpg")
+                    .image("https://2.blogs.elcomercio.pe/huellasdigitales/wp-content/uploads/sites/137/2015/07/LCYP-PORTADA.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -90,7 +90,7 @@ public class BookSeeder {
                     .isbn("9780312420277")
                     .publishedDate(LocalDate.of(2000, 5, 30))
                     .active(true)
-                    .image("https://example.com/images/la_fiesta_del_chivo.jpg")
+                    .image("https://www.teatroinfantaisabel.es/wp-content/uploads/2019/10/LFDC_Qwantiq_400x600.png")
                     .build());
 
             books.add(BookEntity.builder()
@@ -100,7 +100,7 @@ public class BookSeeder {
                     .isbn("9780307387349")
                     .publishedDate(LocalDate.of(1981, 12, 2))
                     .active(true)
-                    .image("https://example.com/images/cronica_de_una_muerte_anunciada.jpg")
+                    .image("https://beta-content.tap-commerce.com.ar//cover/original/9789500751674_1.jpg?id_com=1174")
                     .build());
 
             books.add(BookEntity.builder()
@@ -110,7 +110,7 @@ public class BookSeeder {
                     .isbn("9780060927219")
                     .publishedDate(LocalDate.of(1994, 5, 20))
                     .active(true)
-                    .image("https://example.com/images/paula.jpg")
+                    .image("https://m.media-amazon.com/images/I/91HuTO-ESzL._AC_UF1000,1000_QL80_DpWeblab_.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -120,7 +120,7 @@ public class BookSeeder {
                     .isbn("9780312421892")
                     .publishedDate(LocalDate.of(1973, 8, 1))
                     .active(true)
-                    .image("https://example.com/images/pantaleon_y_las_visitadoras.jpg")
+                    .image("https://pics.filmaffinity.com/Pantaleaon_y_las_visitadoras-332228135-large.jpg")
                     .build());
 
             books.add(BookEntity.builder()
@@ -130,7 +130,7 @@ public class BookSeeder {
                     .isbn("9780060882860")
                     .publishedDate(LocalDate.of(1975, 6, 25))
                     .active(true)
-                    .image("https://example.com/images/el_otono_del_patriarca.jpg")
+                    .image("https://upload.wikimedia.org/wikipedia/commons/a/a8/El_oto%C3%B1o_del_patriarca.png")
                     .build());
 
             booksRepository.saveAll(books);

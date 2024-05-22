@@ -19,7 +19,15 @@ public class BookSearchFacade {
     public List<BookFullDto> searchBooksByTitle(String title) {
         List<BookFullDto> books = new ArrayList<>();
 
-        books.addAll(googleBooks.searchBooks(title));
+        books.addAll(googleBooks.searchByTitle(title));
+
+        return books;
+    }
+
+    public List<BookFullDto> searchBooksByAuthor(String author) {
+        List<BookFullDto> books = new ArrayList<>();
+
+        books.addAll(googleBooks.searchByAuthor(author));
 
         return books;
     }
