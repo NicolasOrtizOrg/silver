@@ -6,6 +6,7 @@ import org.silver.mappers.BookMapper;
 import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookSearchQuery;
 import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.entities.BookEntity;
 import org.silver.services.IBookService;
 import org.silver.utils.PaginationUtils;
@@ -162,11 +163,9 @@ public class BooksController {
      * @param bookCreateDto: DTO del Book.
      */
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody BookCreateDto bookCreateDto) {
+    public ResponseEntity<BookSimpleDto> save(@RequestBody BookCreateDto bookCreateDto) {
         log.info("Intentando guardar Book{}", bookCreateDto);
-
-        bookService.save(bookCreateDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(bookService.save(bookCreateDto), HttpStatus.CREATED);
     }
 
 

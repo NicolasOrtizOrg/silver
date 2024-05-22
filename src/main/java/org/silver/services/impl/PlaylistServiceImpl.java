@@ -9,7 +9,6 @@ import org.silver.mappers.PlaylistMapper;
 import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.dtos.playlist.PlaylistBooksDto;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
-import org.silver.models.entities.BookEntity;
 import org.silver.models.entities.PlaylistBookEntity;
 import org.silver.models.entities.PlaylistEntity;
 import org.silver.repositories.IBooksRepository;

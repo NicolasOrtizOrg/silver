@@ -16,5 +16,6 @@ public class ErrorResponseDto {
     private String code;
     private LocalDateTime timestamp;
     private String uri;
+    private Object error;
 
 }

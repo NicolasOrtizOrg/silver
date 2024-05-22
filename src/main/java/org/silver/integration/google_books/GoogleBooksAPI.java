@@ -40,7 +40,7 @@ public class GoogleBooksAPI implements IBookApiService {
 
     @Override
     public List<BookFullDto> searchByAuthor(String author) {
-        URI uriFinal = buildUri("+inauthor", author);
+        URI uriFinal = buildUri("+inauthor:", author);
         return searchBooks(uriFinal);
     }
 

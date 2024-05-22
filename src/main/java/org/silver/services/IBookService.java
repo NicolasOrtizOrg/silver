@@ -2,6 +2,7 @@ package org.silver.services;
 
 import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.entities.BookEntity;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public interface IBookService {
 
     Page<BookFullDto> findByTitleOrAuthorName(String keyword, Pageable pageable);
 
-    void save(BookCreateDto bookDto);
+    BookSimpleDto save(BookCreateDto bookDto);
 
     void update(Long bookId, BookCreateDto bookDto);
 

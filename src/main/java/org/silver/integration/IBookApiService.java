@@ -8,6 +8,6 @@ public interface IBookApiService {
 
     List<BookFullDto> searchByTitle(String title);
 
-    List<BookFullDto> searchByAuthor(String title);
+    List<BookFullDto> searchByAuthor(String author);
 
 }

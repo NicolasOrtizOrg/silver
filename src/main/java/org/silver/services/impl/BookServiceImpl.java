@@ -6,6 +6,7 @@ import org.silver.exceptions.GenericException;
 import org.silver.mappers.BookMapper;
 import org.silver.models.dtos.books.BookCreateDto;
 import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookSimpleDto;
 import org.silver.models.entities.AuthorEntity;
 import org.silver.models.entities.BookEntity;
 import org.silver.repositories.IBooksRepository;
@@ -94,7 +95,7 @@ public class BookServiceImpl implements IBookService {
      * */
     @Transactional
     @Override
-    public void save(BookCreateDto bookDto) {
+    public BookSimpleDto save(BookCreateDto bookDto) {
         try {
             // Buscar Author en base de datos si existe, o guardar si no existe
             AuthorEntity authorDB = authorService.getOrSave(bookDto.authorName());
@@ -104,7 +105,7 @@ public class BookServiceImpl implements IBookService {
 
             bookEntity.setAuthor(authorDB);
 
-            booksRepository.save(bookEntity);
+            return BookMapper.toSimpleDtoFromEntity(booksRepository.save(bookEntity));
         } catch (DataIntegrityViolationException ex) {
             throw new BookExistsEx(ISBN_EXISTS);
         } catch (Exception ex) {
