@@ -2,6 +2,7 @@ package org.silver.services;
 
 import org.silver.models.dtos.playlist.PlaylistBooksDto;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
+import org.silver.models.entities.PlaylistEntity;
 
 import java.util.List;
 

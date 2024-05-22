@@ -1,6 +1,7 @@
 package org.silver.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +28,8 @@ public class PlaylistEntity {
     @ManyToOne
     private UserEntity user;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonIgnoreProperties("playlist")
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaylistBookEntity> playlistBooks;
 

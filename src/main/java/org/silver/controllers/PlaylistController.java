@@ -2,6 +2,7 @@ package org.silver.controllers;
 
 import org.silver.models.dtos.playlist.PlaylistBooksDto;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
+import org.silver.models.entities.PlaylistEntity;
 import org.silver.services.IPlaylistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
