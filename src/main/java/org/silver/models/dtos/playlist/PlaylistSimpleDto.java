@@ -6,6 +6,7 @@ import lombok.Builder;
 public record PlaylistSimpleDto(
         Long id,
         String name,
-        String firstBookImage
+        String firstBookImage,
+        int totalBooks
 ) {
 }

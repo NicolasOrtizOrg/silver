@@ -1,8 +1,8 @@
 package org.silver.controllers;
 
 import org.silver.models.dtos.playlist.PlaylistBooksDto;
+import org.silver.models.dtos.playlist.PlaylistCreateDto;
 import org.silver.models.dtos.playlist.PlaylistSimpleDto;
-import org.silver.models.entities.PlaylistEntity;
 import org.silver.services.IPlaylistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +31,8 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> savePlaylist(@RequestParam String playlistName) {
-        playlistService.savePlaylist(playlistName);
+    public ResponseEntity<Void> savePlaylist(@RequestBody PlaylistCreateDto playlist) {
+        playlistService.savePlaylist(playlist.playlistName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
