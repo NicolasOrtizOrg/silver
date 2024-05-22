@@ -1,22 +1,16 @@
 package org.silver.integration.google_books;
 
 import org.silver.integration.IBookApiService;
+import org.silver.integration.google_books.models.GoogleApiModel;
 import org.silver.models.dtos.books.BookFullDto;
-import org.silver.models.entities.AuthorEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * todo: verificar que se pongan bien las fechas
- * todo: verificar si las images son null
- * todo: verificar cantidad de libros por API, poner maximo
- * */
 @Service
 public class GoogleBooksAPI implements IBookApiService {
 
@@ -28,60 +22,34 @@ public class GoogleBooksAPI implements IBookApiService {
         this.restTemplate = restTemplate;
     }
 
-    @Override
-    public List<BookFullDto> searchByTitle(String title) {
-        URI urlFinal = UriComponentsBuilder.fromHttpUrl(URL_BASE)
-                .queryParam("q", "+intitle:".concat(title))
-                .queryParam("maxResults", "10")
-                .build()
-                .toUri();
-
+    private List<BookFullDto> searchBooks(URI uri){
         GoogleApiModel response = restTemplate
-                .getForObject(urlFinal, GoogleApiModel.class);
+                .getForObject(uri, GoogleApiModel.class);
 
-        if (response == null)
+        if(response == null)
             return Collections.emptyList();
 
-        return mapToList(response.getItems());
+        return GoogleBooksHelper.mapToList(response.getItems());
+    }
+
+    @Override
+    public List<BookFullDto> searchByTitle(String title) {
+        URI uriFinal = buildUri("+intitle:", title);
+        return searchBooks(uriFinal);
     }
 
     @Override
     public List<BookFullDto> searchByAuthor(String author) {
-        URI urlFinal = UriComponentsBuilder.fromHttpUrl(URL_BASE)
-                .queryParam("q", "+inauthor:".concat(author))
+        URI uriFinal = buildUri("+inauthor", author);
+        return searchBooks(uriFinal);
+    }
+
+
+    private URI buildUri(String param, String value){
+        return UriComponentsBuilder.fromHttpUrl(URL_BASE)
+                .queryParam("q", param.concat(value))
                 .queryParam("maxResults", "10")
-                .build()
-                .toUri();
-
-        GoogleApiModel response = restTemplate
-                .getForObject(urlFinal, GoogleApiModel.class);
-
-        if (response == null)
-            return Collections.emptyList();
-
-        return mapToList(response.getItems());
-    }
-
-
-
-    private List<BookFullDto> mapToList(List<GoogleBookModel> books) {
-        return books.stream()
-                .map(this::toBookFullDto)
-                .toList();
-    }
-
-    private BookFullDto toBookFullDto(GoogleBookModel book) {
-        AuthorEntity author = new AuthorEntity();
-        author.setName(book.getVolumeInfo().getAuthors().get(0));
-
-        return BookFullDto.builder()
-                .title(book.getVolumeInfo().getTitle())
-                .description(book.getVolumeInfo().getDescription())
-                .image("book.getVolumeInfo().getImageLinks().getSmallThumbnail()")
-                .isbn(book.getVolumeInfo().getIndustryIdentifiers().get(0).getIdentifier())
-                .publishedDate(LocalDate.now()) // Fecha falsa
-                .author(author)
-                .build();
+                .build().toUri();
     }
 
 }

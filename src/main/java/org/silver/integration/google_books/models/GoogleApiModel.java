@@ -1,4 +1,4 @@
-package org.silver.integration.google_books;
+package org.silver.integration.google_books.models;
 
 import lombok.Getter;
 import lombok.Setter;
