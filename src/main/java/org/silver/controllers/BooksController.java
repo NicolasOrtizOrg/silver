@@ -26,10 +26,12 @@ public class BooksController {
 
     private final IBookService bookService;
     private final BookSearchFacade bookSearchFacade;
+    private final BookMapper bookMapper;
 
-    public BooksController(IBookService bookService, BookSearchFacade bookSearchFacade) {
+    public BooksController(IBookService bookService, BookSearchFacade bookSearchFacade, BookMapper bookMapper) {
         this.bookService = bookService;
         this.bookSearchFacade = bookSearchFacade;
+        this.bookMapper = bookMapper;
     }
 
 
@@ -126,7 +128,7 @@ public class BooksController {
     public ResponseEntity<Page<BookResponseFullDTO>> getByDynamicQuery(BookSearchQueryDTO bookRequest,
                                                                        @RequestParam int page) {
         // Mapear DTO a entidad
-        BookEntity bookEntity = BookMapper.toEntity(bookRequest);
+        BookEntity bookEntity = bookMapper.toEntity(bookRequest);
 
         // Configuración de Paginación
         Pageable pageable = PaginationUtils.setPagination(page);

@@ -5,17 +5,17 @@ import org.silver.models.dtos.books.BookResponseFullDTO;
 import org.silver.models.dtos.books.BookSearchQueryDTO;
 import org.silver.models.dtos.books.BookResponseSimpleDTO;
 import org.silver.models.entities.BookEntity;
+import org.springframework.stereotype.Component;
 
 
+@Component
 public class BookMapper {
 
-    private BookMapper() {
-    }
 
     /**
      * Mapea los DTO de creación/actualización a una entidad.
      * */
-    public static BookEntity toEntity(BookSaveDTO bookDto) {
+    public BookEntity toEntity(BookSaveDTO bookDto) {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
@@ -29,7 +29,7 @@ public class BookMapper {
     /**
      * Mapea los DTO de Queries Dinámicas a una entidad.
      * */
-    public static BookEntity toEntity(BookSearchQueryDTO bookDto) {
+    public BookEntity toEntity(BookSearchQueryDTO bookDto) {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
@@ -41,7 +41,7 @@ public class BookMapper {
     /**
      * Mapea una entidad a un DTO full.
      * */
-    public static BookResponseFullDTO toDtoFull(BookEntity bookEntity) {
+    public BookResponseFullDTO toDtoFull(BookEntity bookEntity) {
         return BookResponseFullDTO.builder()
                 .id(bookEntity.getId())
                 .title(bookEntity.getTitle())
@@ -56,7 +56,7 @@ public class BookMapper {
     /**
      * Mapea una entidad a un DTO Simple.
      * */
-    public static BookResponseSimpleDTO toDtoSimple(BookEntity bookEntity) {
+    public BookResponseSimpleDTO toDtoSimple(BookEntity bookEntity) {
         return BookResponseSimpleDTO.builder()
                 .id(bookEntity.getId())
                 .title(bookEntity.getTitle())

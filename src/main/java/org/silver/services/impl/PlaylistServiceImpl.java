@@ -24,11 +24,15 @@ public class PlaylistServiceImpl implements IPlaylistService {
     private final IPlaylistRepository playlistRepository;
     private final IPlaylistBookRepository midRepository;
     private final IBooksRepository bookRepository;
+    private final BookMapper bookMapper;
+    private final PlaylistMapper playlistMapper;
 
-    public PlaylistServiceImpl(IPlaylistRepository playlistRepository, IPlaylistBookRepository midRepository, IBooksRepository bookRepository) {
+    public PlaylistServiceImpl(IPlaylistRepository playlistRepository, IPlaylistBookRepository midRepository, IBooksRepository bookRepository, BookMapper bookMapper, PlaylistMapper playlistMapper) {
         this.playlistRepository = playlistRepository;
         this.midRepository = midRepository;
         this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+        this.playlistMapper = playlistMapper;
     }
 
 
@@ -45,7 +49,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
         List<PlaylistEntity> playlist = playlistRepository.findByUserId(userId);
 
         return playlist.stream()
-                .map(PlaylistMapper::toDto)
+                .map(playlistMapper::toDto)
                 .toList();
     }
 
@@ -65,7 +69,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
         // Obtener libros de la playlist
         List<BookResponseSimpleDTO> books = midRepository.findByPlaylistId(playlistId)
                 .stream()
-                .map(book -> BookMapper.toDtoSimple(book.getBook()))
+                .map(book -> bookMapper.toDtoSimple(book.getBook()))
                 .toList();
 
         return new PlaylistBooksResponseDTO(playlistId, playlist.getName(), books);
@@ -80,7 +84,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
     public void save(String playlistName) {
         Long userId = Long.valueOf(HeaderUtils.getHeader("userId"));
         try {
-            PlaylistEntity playlist = PlaylistMapper.toEntity(playlistName, userId);
+            PlaylistEntity playlist = playlistMapper.toEntity(playlistName, userId);
 
             playlistRepository.save(playlist);
         } catch (DataIntegrityViolationException ex) {
@@ -113,7 +117,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
             throw new GenericException(RELATION_EXISTS);
 
         try {
-            PlaylistBookEntity midTable = PlaylistMapper.toEntity(bookId, playlistId);
+            PlaylistBookEntity midTable = playlistMapper.toEntity(bookId, playlistId);
             midRepository.save(midTable);
 
         } catch (DataIntegrityViolationException ex) {
