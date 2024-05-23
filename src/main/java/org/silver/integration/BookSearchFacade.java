@@ -11,7 +11,6 @@ import java.util.List;
 public class BookSearchFacade {
 
     private final GoogleBooksAPI googleBooks;
-    List<BookResponseFullDTO> books = new ArrayList<>();
 
     public BookSearchFacade(GoogleBooksAPI googleBooks) {
         this.googleBooks = googleBooks;
@@ -19,6 +18,8 @@ public class BookSearchFacade {
 
 
     public List<BookResponseFullDTO> searchBooksByTitle(String title) {
+        List<BookResponseFullDTO> books = new ArrayList<>();
+
         // Agregar todas las API que integremos
         books.addAll(googleBooks.searchByTitle(title));
 
@@ -26,6 +27,8 @@ public class BookSearchFacade {
     }
 
     public List<BookResponseFullDTO> searchBooksByAuthor(String author) {
+        List<BookResponseFullDTO> books = new ArrayList<>();
+
         // Agregar todas las API que integremos
         books.addAll(googleBooks.searchByAuthor(author));
 

@@ -28,10 +28,12 @@ public class BookServiceImpl implements IBookService {
 
     private final IBooksRepository booksRepository;
     private final IAuthorService authorService;
+    private final BookMapper bookMapper;
 
-    public BookServiceImpl(IBooksRepository booksRepository, IAuthorService authorService) {
+    public BookServiceImpl(IBooksRepository booksRepository, IAuthorService authorService, BookMapper bookMapper) {
         this.booksRepository = booksRepository;
         this.authorService = authorService;
+        this.bookMapper = bookMapper;
     }
 
 
@@ -45,7 +47,7 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Page<BookResponseFullDTO> findByDynamicQuery(Example<BookEntity> dynamicDto, Pageable pageable) {
         return booksRepository.findAll(dynamicDto, pageable)
-                .map(BookMapper::toDtoFull);
+                .map(bookMapper::toDtoFull);
     }
 
     /**
@@ -58,7 +60,7 @@ public class BookServiceImpl implements IBookService {
     public BookResponseFullDTO findById(Long bookId) {
         BookEntity bookDB = booksRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFound(BOOK_NOT_FOUND));
-        return BookMapper.toDtoFull(bookDB);
+        return bookMapper.toDtoFull(bookDB);
     }
 
     /**
@@ -67,7 +69,7 @@ public class BookServiceImpl implements IBookService {
      */
     @Override
     public Page<BookResponseFullDTO> findAllActive(Pageable pageable) {
-        return booksRepository.findAllByActiveIsTrue(pageable).map(BookMapper::toDtoFull);
+        return booksRepository.findAllByActiveIsTrue(pageable).map(bookMapper::toDtoFull);
     }
 
     /**
@@ -77,7 +79,7 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Page<BookResponseFullDTO> findByAuthor(String authorName, Pageable pageable) {
         return booksRepository.findByAuthorNameContainingIgnoreCase(authorName, pageable)
-                .map(BookMapper::toDtoFull);
+                .map(bookMapper::toDtoFull);
     }
 
     /**
@@ -87,7 +89,7 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Page<BookResponseFullDTO> findByKeyword(String keyword, Pageable pageable) {
         return booksRepository.findByTitleOrAuthorName(keyword, pageable)
-                .map(BookMapper::toDtoFull);
+                .map(bookMapper::toDtoFull);
     }
 
 
@@ -105,11 +107,11 @@ public class BookServiceImpl implements IBookService {
             AuthorEntity authorDB = authorService.getOrSave(bookDto.authorName());
 
             // Mapear DTO a Entity
-            BookEntity bookEntity = BookMapper.toEntity(bookDto);
+            BookEntity bookEntity = bookMapper.toEntity(bookDto);
 
             bookEntity.setAuthor(authorDB);
 
-            return BookMapper.toDtoSimple(booksRepository.save(bookEntity));
+            return bookMapper.toDtoSimple(booksRepository.save(bookEntity));
         } catch (DataIntegrityViolationException ex) {
             throw new ResourceDuplicate(ISBN_EXISTS);
         } catch (Exception ex) {
