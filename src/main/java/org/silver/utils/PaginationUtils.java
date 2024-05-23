@@ -10,7 +10,7 @@ public class PaginationUtils {
 
     // Pagination config
     public static Pageable setPagination(int page) {
-        int size = 10;
+        int size = 5;
         return PageRequest.of(page, size);
     }
 
