@@ -24,7 +24,6 @@ public class JpaUtils {
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 //
-                // throw new RuntimeException(e);
             }
         }
     }

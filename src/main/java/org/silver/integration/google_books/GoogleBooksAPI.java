@@ -2,7 +2,7 @@ package org.silver.integration.google_books;
 
 import org.silver.integration.IBookApiService;
 import org.silver.integration.google_books.models.GoogleApiModel;
-import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookResponseFullDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,7 +22,7 @@ public class GoogleBooksAPI implements IBookApiService {
         this.restTemplate = restTemplate;
     }
 
-    private List<BookFullDto> searchBooks(URI uri){
+    private List<BookResponseFullDTO> searchBooks(URI uri){
         GoogleApiModel response = restTemplate
                 .getForObject(uri, GoogleApiModel.class);
 
@@ -33,13 +33,13 @@ public class GoogleBooksAPI implements IBookApiService {
     }
 
     @Override
-    public List<BookFullDto> searchByTitle(String title) {
+    public List<BookResponseFullDTO> searchByTitle(String title) {
         URI uriFinal = buildUri("+intitle:", title);
         return searchBooks(uriFinal);
     }
 
     @Override
-    public List<BookFullDto> searchByAuthor(String author) {
+    public List<BookResponseFullDTO> searchByAuthor(String author) {
         URI uriFinal = buildUri("+inauthor:", author);
         return searchBooks(uriFinal);
     }

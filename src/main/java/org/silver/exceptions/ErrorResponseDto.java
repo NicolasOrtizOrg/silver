@@ -7,13 +7,13 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
-@Builder
+@Getter
+@Setter
 @ToString
+@Builder
 public class ErrorResponseDto {
 
     private String message;
-    private String code;
     private LocalDateTime timestamp;
     private String uri;
     private Object error;

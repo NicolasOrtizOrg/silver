@@ -1,20 +1,19 @@
 package org.silver.services;
 
-import org.silver.models.dtos.playlist.PlaylistBooksDto;
-import org.silver.models.dtos.playlist.PlaylistSimpleDto;
-import org.silver.models.entities.PlaylistEntity;
+import org.silver.models.dtos.playlist.PlaylistBooksResponseDTO;
+import org.silver.models.dtos.playlist.PlaylistResponseSimpleDTO;
 
 import java.util.List;
 
 public interface IPlaylistService {
 
-    List<PlaylistSimpleDto> findByUserId();
+    List<PlaylistResponseSimpleDTO> findByUserId();
 
-    PlaylistBooksDto findByPlaylistId(Long playlistId);
+    PlaylistBooksResponseDTO findById(Long playlistId);
 
-    void savePlaylist(String playlistName);
+    void save(String playlistName);
 
-    void deletePlaylist(Long playlistId);
+    void delete(Long playlistId);
 
     void addBook(Long bookId, Long playlistId);
 

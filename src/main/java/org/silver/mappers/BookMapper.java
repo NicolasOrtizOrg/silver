@@ -1,9 +1,9 @@
 package org.silver.mappers;
 
-import org.silver.models.dtos.books.BookCreateDto;
-import org.silver.models.dtos.books.BookFullDto;
-import org.silver.models.dtos.books.BookSearchQuery;
-import org.silver.models.dtos.books.BookSimpleDto;
+import org.silver.models.dtos.books.BookSaveDTO;
+import org.silver.models.dtos.books.BookResponseFullDTO;
+import org.silver.models.dtos.books.BookSearchQueryDTO;
+import org.silver.models.dtos.books.BookResponseSimpleDTO;
 import org.silver.models.entities.BookEntity;
 
 
@@ -15,7 +15,7 @@ public class BookMapper {
     /**
      * Mapea los DTO de creación/actualización a una entidad.
      * */
-    public static BookEntity toEntityFromRequest(BookCreateDto bookDto) {
+    public static BookEntity toEntity(BookSaveDTO bookDto) {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
@@ -29,7 +29,7 @@ public class BookMapper {
     /**
      * Mapea los DTO de Queries Dinámicas a una entidad.
      * */
-    public static BookEntity toEntityFromQuery(BookSearchQuery bookDto) {
+    public static BookEntity toEntity(BookSearchQueryDTO bookDto) {
         return BookEntity.builder()
                 .title(bookDto.title())
                 .description(bookDto.description())
@@ -41,8 +41,8 @@ public class BookMapper {
     /**
      * Mapea una entidad a un DTO full.
      * */
-    public static BookFullDto toFullDtoFromEntity(BookEntity bookEntity) {
-        return BookFullDto.builder()
+    public static BookResponseFullDTO toDtoFull(BookEntity bookEntity) {
+        return BookResponseFullDTO.builder()
                 .id(bookEntity.getId())
                 .title(bookEntity.getTitle())
                 .description(bookEntity.getDescription())
@@ -56,8 +56,8 @@ public class BookMapper {
     /**
      * Mapea una entidad a un DTO Simple.
      * */
-    public static BookSimpleDto toSimpleDtoFromEntity(BookEntity bookEntity) {
-        return BookSimpleDto.builder()
+    public static BookResponseSimpleDTO toDtoSimple(BookEntity bookEntity) {
+        return BookResponseSimpleDTO.builder()
                 .id(bookEntity.getId())
                 .title(bookEntity.getTitle())
                 .image(bookEntity.getImage())

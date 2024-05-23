@@ -1,8 +1,8 @@
 package org.silver.services;
 
-import org.silver.models.dtos.books.BookCreateDto;
-import org.silver.models.dtos.books.BookFullDto;
-import org.silver.models.dtos.books.BookSimpleDto;
+import org.silver.models.dtos.books.BookSaveDTO;
+import org.silver.models.dtos.books.BookResponseFullDTO;
+import org.silver.models.dtos.books.BookResponseSimpleDTO;
 import org.silver.models.entities.BookEntity;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -10,20 +10,22 @@ import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
 
-    Page<BookFullDto> findByDynamicQuery(Example<BookEntity> dynamicDto, Pageable pageable);
+    Page<BookResponseFullDTO> findByDynamicQuery(Example<BookEntity> dynamicDto, Pageable pageable);
 
-    BookFullDto findById(Long bookId);
+    BookResponseFullDTO findById(Long bookId);
 
-    Page<BookFullDto> findAllActive(Pageable pageable);
+    Page<BookResponseFullDTO> findAllActive(Pageable pageable);
 
-    Page<BookFullDto> findByAuthor(String authorName, Pageable pageable);
+    Page<BookResponseFullDTO> findByAuthor(String authorName, Pageable pageable);
 
-    Page<BookFullDto> findByTitleOrAuthorName(String keyword, Pageable pageable);
+    // Busca por título o autor que contenga la keyword.
+    Page<BookResponseFullDTO> findByKeyword(String keyword, Pageable pageable);
 
-    BookSimpleDto save(BookCreateDto bookDto);
+    BookResponseSimpleDTO save(BookSaveDTO bookDto);
 
-    void update(Long bookId, BookCreateDto bookDto);
+    void update(Long bookId, BookSaveDTO bookDto);
 
+    // Soft delete. Cambia el estado "activo".
     void changeStatus(Long bookId, boolean status);
 
 }

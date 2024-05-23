@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Cargar Users al iniciar el proyecto
- * */
+ */
 @Component
 public class UserSeeder {
 
@@ -17,7 +17,7 @@ public class UserSeeder {
     }
 
     public void loadData() {
-        if (userRepository.count() == 0){
+        if (userRepository.count() == 0) {
             UserEntity user1 = new UserEntity();
             UserEntity user2 = new UserEntity();
             UserEntity user3 = new UserEntity();

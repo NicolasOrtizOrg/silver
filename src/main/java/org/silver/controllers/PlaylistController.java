@@ -1,8 +1,8 @@
 package org.silver.controllers;
 
-import org.silver.models.dtos.playlist.PlaylistBooksDto;
-import org.silver.models.dtos.playlist.PlaylistCreateDto;
-import org.silver.models.dtos.playlist.PlaylistSimpleDto;
+import org.silver.models.dtos.playlist.PlaylistBooksResponseDTO;
+import org.silver.models.dtos.playlist.PlaylistCreateDTO;
+import org.silver.models.dtos.playlist.PlaylistResponseSimpleDTO;
 import org.silver.services.IPlaylistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,38 +21,38 @@ public class PlaylistController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlaylistSimpleDto>> getPlaylistsByUserId() {
+    public ResponseEntity<List<PlaylistResponseSimpleDTO>> getByUserId() {
         return new ResponseEntity<>(playlistService.findByUserId(), HttpStatus.OK);
     }
 
     @GetMapping("/{playlistId}")
-    public ResponseEntity<PlaylistBooksDto> getPlaylistById(@PathVariable Long playlistId) {
-        return new ResponseEntity<>(playlistService.findByPlaylistId(playlistId), HttpStatus.OK);
+    public ResponseEntity<PlaylistBooksResponseDTO> getById(@PathVariable Long playlistId) {
+        return new ResponseEntity<>(playlistService.findById(playlistId), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Void> savePlaylist(@RequestBody PlaylistCreateDto playlist) {
-        playlistService.savePlaylist(playlist.playlistName());
+    public ResponseEntity<Void> save(@RequestBody PlaylistCreateDTO playlist) {
+        playlistService.save(playlist.playlistName());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<Void> addBookInPlaylist(@RequestParam Long bookId,
-                                                  @RequestParam Long playlistId) {
+    public ResponseEntity<Void> addBook(@RequestParam Long bookId,
+                                        @RequestParam Long playlistId) {
         playlistService.addBook(bookId, playlistId);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/remove-book")
-    public ResponseEntity<Void> removeBookFromPlaylist(@RequestParam Long bookId,
-                                                       @RequestParam Long playlistId) {
+    public ResponseEntity<Void> removeBook(@RequestParam Long bookId,
+                                           @RequestParam Long playlistId) {
         playlistService.removeBook(bookId, playlistId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{playlistId}")
-    public ResponseEntity<Void> deletePlaylist(@PathVariable Long playlistId) {
-        playlistService.deletePlaylist(playlistId);
+    public ResponseEntity<Void> delete(@PathVariable Long playlistId) {
+        playlistService.delete(playlistId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

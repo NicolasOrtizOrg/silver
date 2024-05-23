@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class HeaderInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String userId = request.getHeader("userId");
         if (userId == null)
             throw new GenericException("Deberías agregar un 'userId' en los headers para hacer peticiones a este endpoint.");
@@ -21,7 +21,7 @@ public class HeaderInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         HeaderUtils.deleteHeader();
     }
 }

@@ -20,8 +20,9 @@ public class AuthorServiceImpl implements IAuthorService {
     /**
      * Crea un Author.
      * Los nombres se pueden repetir.
+     *
      * @param authorName: nombre del Author
-     * */
+     */
     @Override
     public void save(String authorName) {
         AuthorEntity author = new AuthorEntity();
@@ -31,9 +32,10 @@ public class AuthorServiceImpl implements IAuthorService {
 
     /**
      * Obtener o crear un Author.
+     *
      * @param authorName: nombre del Author.
      * @return AuthorEntity: entidad desde base de datos.
-     * */
+     */
     @Override
     public AuthorEntity getOrSave(String authorName) {
         String name = authorName.trim();

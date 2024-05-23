@@ -1,12 +1,12 @@
 package org.silver.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
-//@DynamicUpdate
+@DynamicUpdate
 @Entity
 @Data
 @Builder
@@ -18,7 +18,6 @@ public class BookEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2, max = 255, message = "El título deber tener entre 2 y 255 caracteres")
     @Column(nullable = false)
     private String title;
 

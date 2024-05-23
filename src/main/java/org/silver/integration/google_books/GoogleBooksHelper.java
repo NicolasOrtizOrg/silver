@@ -2,7 +2,7 @@ package org.silver.integration.google_books;
 
 import org.silver.integration.google_books.models.GoogleBookModel;
 import org.silver.integration.google_books.models.ImageLinks;
-import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookResponseFullDTO;
 import org.silver.models.entities.AuthorEntity;
 
 import java.lang.reflect.Field;
@@ -54,7 +54,7 @@ public class GoogleBooksHelper {
 
 
     // Llama a mapear todos los libros y filtra los que tienen valores nulos
-    public static List<BookFullDto> mapToList(List<GoogleBookModel> books) {
+    public static List<BookResponseFullDTO> mapToList(List<GoogleBookModel> books) {
         return books.stream()
                 .map(GoogleBooksHelper::mapToBookFullDto)
                 .filter(book ->
@@ -65,7 +65,7 @@ public class GoogleBooksHelper {
     }
 
     // Mapper
-    public static BookFullDto mapToBookFullDto(GoogleBookModel book) {
+    public static BookResponseFullDTO mapToBookFullDto(GoogleBookModel book) {
         try {
             AuthorEntity author = new AuthorEntity();
             LocalDate publishedDate = validateDate(book.getVolumeInfo().getPublishedDate());
@@ -73,7 +73,7 @@ public class GoogleBooksHelper {
 
             author.setName(book.getVolumeInfo().getAuthors().get(0));
 
-            return BookFullDto.builder()
+            return BookResponseFullDTO.builder()
                     .id(-1L) // -1 para poder guardar en base de datos el libro
                     .title(book.getVolumeInfo().getTitle())
                     .description(book.getVolumeInfo().getDescription())
@@ -83,7 +83,7 @@ public class GoogleBooksHelper {
                     .author(author)
                     .build();
         } catch (Exception ex) {
-            return BookFullDto.builder().build();
+            return BookResponseFullDTO.builder().build();
         }
     }
 

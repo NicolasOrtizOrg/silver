@@ -1,14 +1,14 @@
 package org.silver.models.dtos.playlist;
 
 import lombok.Builder;
-import org.silver.models.dtos.books.BookSimpleDto;
+import org.silver.models.dtos.books.BookResponseSimpleDTO;
 
 import java.util.List;
 
 @Builder
-public record PlaylistBooksDto(
+public record PlaylistBooksResponseDTO(
         Long id,
         String name,
-        List<BookSimpleDto> books
+        List<BookResponseSimpleDTO> books
 ) {
 }

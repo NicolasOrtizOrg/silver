@@ -1,15 +1,10 @@
 package org.silver.mappers;
 
-import org.silver.models.dtos.books.BookSimpleDto;
-import org.silver.models.dtos.playlist.PlaylistBooksDto;
-import org.silver.models.dtos.playlist.PlaylistSimpleDto;
+import org.silver.models.dtos.playlist.PlaylistResponseSimpleDTO;
 import org.silver.models.entities.BookEntity;
 import org.silver.models.entities.PlaylistBookEntity;
 import org.silver.models.entities.PlaylistEntity;
 import org.silver.models.entities.UserEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class PlaylistMapper {
@@ -18,29 +13,13 @@ public class PlaylistMapper {
     }
 
     /**
-     * Mapear Entity a FullDto.
-     */
-    public static PlaylistBooksDto toFullDtoFromEntity(PlaylistEntity entity) {
-        List<BookSimpleDto> booksDto = new ArrayList<>();
-
-        entity.getPlaylistBooks()
-                .forEach(book -> booksDto.add(BookMapper.toSimpleDtoFromEntity(book.getBook())));
-
-        return PlaylistBooksDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .books(booksDto)
-                .build();
-    }
-
-    /**
      * Mapear Entity a SimpleDto
      */
-    public static PlaylistSimpleDto toSimpleDtoFromEntity(PlaylistEntity entity) {
+    public static PlaylistResponseSimpleDTO toDto(PlaylistEntity entity) {
         String firstBookImage = entity.getPlaylistBooks().isEmpty() ?
                 null : entity.getPlaylistBooks().get(0).getBook().getImage();
 
-        return PlaylistSimpleDto.builder()
+        return PlaylistResponseSimpleDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .firstBookImage(firstBookImage)

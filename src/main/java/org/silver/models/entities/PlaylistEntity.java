@@ -27,7 +27,6 @@ public class PlaylistEntity {
     @ManyToOne
     private UserEntity user;
 
-//    @JsonIgnore
     @JsonIgnoreProperties("playlist")
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaylistBookEntity> playlistBooks;

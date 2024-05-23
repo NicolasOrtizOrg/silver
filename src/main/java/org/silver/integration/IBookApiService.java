@@ -1,13 +1,13 @@
 package org.silver.integration;
 
-import org.silver.models.dtos.books.BookFullDto;
+import org.silver.models.dtos.books.BookResponseFullDTO;
 
 import java.util.List;
 
 public interface IBookApiService {
 
-    List<BookFullDto> searchByTitle(String title);
+    List<BookResponseFullDTO> searchByTitle(String title);
 
-    List<BookFullDto> searchByAuthor(String author);
+    List<BookResponseFullDTO> searchByAuthor(String author);
 
 }

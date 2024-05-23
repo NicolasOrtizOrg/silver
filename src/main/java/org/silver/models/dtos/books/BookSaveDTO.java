@@ -1,11 +1,14 @@
 package org.silver.models.dtos.books;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 /**
- * DTO para CREAR Books
+ * DTO para CREAR y ACTUALIZAR Books
  * */
-public record BookCreateDto(
+public record BookSaveDTO(
+        @Size(min = 2, max = 255, message = "El título deber tener entre 2 y 255 caracteres")
         String title,
         String description,
         String image,

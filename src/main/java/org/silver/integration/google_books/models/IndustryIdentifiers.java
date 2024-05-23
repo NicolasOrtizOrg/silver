@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IndustryIdentifiers {
+
     private String type;
     private String identifier;
+
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Cargar todos los datos al iniciar el proyecto
- * */
+ */
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -18,7 +18,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         bookSeeder.loadData();
         userSeeder.loadData();
     }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * DTO con todos los datos completos
  * */
 @Builder
-public record BookFullDto(
+public record BookResponseFullDTO(
         Long id,
         String title,
         String description,
