@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RestController
 @RequestMapping("/books")
-public class BooksController {
+public class BookController {
 
     private final IBookService bookService;
     private final BookSearchFacade bookSearchFacade;
     private final BookMapper bookMapper;
 
-    public BooksController(IBookService bookService, BookSearchFacade bookSearchFacade, BookMapper bookMapper) {
+    public BookController(IBookService bookService, BookSearchFacade bookSearchFacade, BookMapper bookMapper) {
         this.bookService = bookService;
         this.bookSearchFacade = bookSearchFacade;
         this.bookMapper = bookMapper;
